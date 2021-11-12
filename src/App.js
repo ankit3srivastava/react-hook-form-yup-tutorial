@@ -71,7 +71,7 @@ function App() {
         <br />
         <input type="date" name="closingDate" ref={register}/>
         {errors.closingDate?.type === "required" && (
-          <p style={{ color: "red" }}>{errors.openingDate.message}</p>
+          <p style={{ color: "red" }}>{errors.closingDate.message}</p>
         )}
         <br />
         <button type="submit">Submit</button>
