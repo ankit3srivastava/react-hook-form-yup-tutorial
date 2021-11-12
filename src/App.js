@@ -1,23 +1,57 @@
-import logo from './logo.svg';
-import './App.css';
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+// import { yupResolver } from "@hookform/resolvers/yup";
 
 function App() {
+  let schema = yup.object().shape({
+    firstname: yup.string().required(),
+    email: yup.string().required().email(),
+    password: yup.string().required().min(6)
+  })
+  const { register, handleSubmit, errors } = useForm({
+    mode: "onTouched",
+    validationSchema: schema
+  });
+  const onSubmit = (data) => console.log("submited :",data);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <input
+          type="text"
+          name="firstname"
+          // ref={register({
+          //   required:true
+          // })}
+          ref={register}
+        />
+        {errors.firstname?.type === "required" && <p style={{color: "red"}}>{errors.firstname.message}</p>}
+        <br />
+        <input
+          type="text"
+          name="email"
+          // ref={register({
+          //   required:true,
+          //   pattern: some regx pattern
+          // })}
+          ref={register}
+        />
+        {errors.email?.type === "required" && <p style={{color: "red"}}>{errors.email.message}</p>}
+        {errors.email?.type === "email" && <p style={{color: "red"}}>{errors.email.message}</p>}
+        <br />
+        <input
+          type="password"
+          name="password"
+          // ref={register({
+          //   required:true,
+          //   minLength: 6
+          // })}
+          ref={register}
+        />
+        {errors.password?.type === "required" && <p style={{color: "red"}}>{errors.password.message}</p>}
+        {errors.password?.type === "min" && <p style={{color: "red"}}>{errors.password.message}</p>}
+        <br />
+        <button type="submit">Submit</button>
+      </form>
     </div>
   );
 }
